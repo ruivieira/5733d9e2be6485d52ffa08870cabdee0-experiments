@@ -17,22 +17,21 @@ class OB:
         self._token = self._getBearerToken()["access_token"]
 
     def _getBearerToken(self) -> Any:
-        command = [
-            "curl",
-            "--insecure",
-            "-X",
-            "POST",
-            f"{self._keycloackUrl}/auth/realms/event-bridge-fm/protocol/openid-connect/token",
-            "--user",
-            "event-bridge:secret",
-            "-H",
-            "content-type: application/x-www-form-urlencoded",
-            "-d",
-            "username=kermit&password=thefrog&grant_type=password",
-        ]
+        headers = {
+            "content-type": "application/x-www-form-urlencoded",
+        }
 
-        result = subprocess.run(command, capture_output=True)
-        return json.loads(result.stdout)
+        data = {"username": "kermit", "password": "thefrog", "grant_type": "password"}
+
+        response = requests.post(
+            f"{self._keycloackUrl}/auth/realms/event-bridge-fm/protocol/openid-connect/token",
+            headers=headers,
+            data=data,
+            verify=False,
+            auth=("event-bridge", "secret"),
+        )
+
+        return response.json()
 
     @property
     def bridges(self) -> Any:
