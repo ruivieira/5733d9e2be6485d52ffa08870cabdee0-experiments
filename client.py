@@ -43,7 +43,7 @@ class OB:
 
     def createBridge(self, name: str) -> Any:
         headers = {
-            "Authorization": f"{self._token}",
+            "Authorization": f"Bearer {self._token}",
             "Accept": "application/json",
             "Content-Type": "application/json",
         }
