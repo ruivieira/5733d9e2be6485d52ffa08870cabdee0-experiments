@@ -41,6 +41,22 @@ class OB:
         )
         return response.json()
 
+    def createBridge(self, name: str) -> Any:
+        headers = {
+            "Authorization": f"{self._token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        }
+
+        json_data = {
+            "name": name,
+        }
+
+        response = requests.post(
+            f"{self._managerUrl}/api/v1/bridges", headers=headers, json=json_data
+        )
+        return response.json()
+
 
 MANAGER_URL = "http://localhost:8080"
 KEYCLOAK_URL = f"http://{minikubeIp()}:30007"
@@ -50,3 +66,6 @@ ob = OB(managerUrl=MANAGER_URL, keycloackUrl=KEYCLOAK_URL)
 bridges = ob.bridges
 
 print(bridges)
+
+result = ob.createBridge("experimental")
+print(result)
