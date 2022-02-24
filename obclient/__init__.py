@@ -1,13 +1,26 @@
-import json
 import requests
-from base64 import b64encode
-from typing import Any
+import os
+from typing import Any, Optional
 
 
 class OB:
-    def __init__(self, managerUrl: str, keycloackUrl: str) -> None:
-        self._managerUrl = managerUrl
-        self._keycloackUrl = keycloackUrl
+    def __init__(
+        self, managerUrl: Optional[str] = None, keycloakUrl: Optional[str] = None
+    ) -> None:
+        if not managerUrl:
+            self._managerUrl = os.getenv("MANAGER_URL")
+        else:
+            self._managerUrl = managerUrl
+
+        print(self._managerUrl)
+
+        if not keycloakUrl:
+            self._keycloakUrl = os.getenv("KEYCLOAK_URL")
+        else:
+            self._keycloakUrl = keycloakUrl
+
+        print(self._keycloakUrl)
+
         self._token = self._getBearerToken()["access_token"]
 
     def _getBearerToken(self) -> Any:
@@ -18,7 +31,7 @@ class OB:
         data = {"username": "kermit", "password": "thefrog", "grant_type": "password"}
 
         response = requests.post(
-            f"{self._keycloackUrl}/auth/realms/event-bridge-fm/protocol/openid-connect/token",
+            f"{self._keycloakUrl}/auth/realms/event-bridge-fm/protocol/openid-connect/token",
             headers=headers,
             data=data,
             verify=False,
