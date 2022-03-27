@@ -1,6 +1,7 @@
 #!/usr/bin/env xonsh
 import kafka
 import minikube
+import images
 
 $XONSH_COLOR_STYLE = 'native'
 # configure Kafka
@@ -54,3 +55,6 @@ print(minikube_config)
 print(localconfig)
 minikube.start_minikube(minikube_config=minikube_config,
     localconfig=localconfig)
+
+# build docker images
+images.build(minikube_config, localconfig)
