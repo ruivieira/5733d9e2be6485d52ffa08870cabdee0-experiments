@@ -23,3 +23,5 @@
 hs_err_pid*
 *.sublime-project
 *.sublime-workspace
+.idea
+k8s/.cache
